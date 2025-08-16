@@ -20,19 +20,16 @@ class PageContainerWithNavState extends State<PageContainerWithNav> {
     _selectedIndex = widget.initialIndex;
   }
 
-  final List<Widget> _pages = [
-    WelcomeScreen(),
-    GenerateScreen(),
-    FavoritesScreen(),
-  ];
+  List<Widget> _buildPages() {
+    return [WelcomeScreen(), GenerateScreen(), FavoritesScreen()];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final pages = _buildPages();
+
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages
-      ),
+      body: IndexedStack(index: _selectedIndex, children: pages),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (index) {
@@ -40,11 +37,11 @@ class PageContainerWithNavState extends State<PageContainerWithNav> {
             _selectedIndex = index;
           });
         },
-        destinations: const[
+        destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.menu), label: 'Menu'),
+          NavigationDestination(icon: Icon(Icons.coffee_outlined), label: 'Coffee'),
           NavigationDestination(icon: Icon(Icons.favorite), label: 'Favorites'),
-        ]
+        ],
       ),
     );
   }

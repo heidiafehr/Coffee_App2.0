@@ -1,12 +1,51 @@
+import 'package:coffee_app_2/generate_screen/bloc/generate_bloc.dart';
+import 'package:coffee_app_2/generate_screen/bloc/generate_event.dart';
+import 'package:coffee_app_2/generate_screen/bloc/generate_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class GenerateScreen extends StatelessWidget {
+class GenerateScreen extends StatefulWidget {
   const GenerateScreen({super.key});
 
   @override
+  State<GenerateScreen> createState() => _GenerateScreenState();
+}
+
+class _GenerateScreenState extends State<GenerateScreen> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Text('I am the generate screen'),
+    final generateBloc = context.read<GenerateBloc>();
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BlocBuilder<GenerateBloc, GenerateState>(
+            builder: (context, state) {
+              if (state is ImageLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is ImageLoaded) {
+                return Column(
+                  children: [
+                    Image.network(state.imageUrl),
+                    Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () => generateBloc.add(LoadImage()),
+                          child: Icon(Icons.refresh_rounded),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              } else if (state is ImageError) {
+                return Text('uh oh there is an error loading the image');
+              }
+              return const SizedBox.shrink();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

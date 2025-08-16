@@ -5,4 +5,3 @@ void main() {
   // set up dependencies and stuff here
   runApp(const CoffeeApp2());
 }
-

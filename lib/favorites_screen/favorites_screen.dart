@@ -6,7 +6,7 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('I am the favorited screen'),
+      body: Center(child: Text('I am the favorited screen'),)
     );
   }
 }
