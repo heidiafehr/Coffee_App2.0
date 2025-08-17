@@ -2,8 +2,9 @@ abstract class GenerateEvent {}
 
 class LoadImage extends GenerateEvent {}
 
-class AddFavoriteImage extends GenerateEvent {
-  AddFavoriteImage(this.imageUrl);
+class ToggleFavoritesItem extends GenerateEvent {
+  ToggleFavoritesItem(this.imageUrl, {required this.isFavorited});
 
   final String imageUrl;
+  final bool isFavorited;
 }

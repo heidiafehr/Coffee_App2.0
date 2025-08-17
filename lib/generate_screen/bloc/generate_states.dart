@@ -14,7 +14,7 @@ class ImageLoaded extends GenerateState {
   final bool isFavorited;
   
   @override
-  List<Object?> get props => [imageUrl];
+  List<Object?> get props => [imageUrl, isFavorited];
 }
 
 class ImageError extends GenerateState {

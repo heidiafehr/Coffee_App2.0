@@ -8,41 +8,52 @@ import 'package:coffee_app_2/service_locator.dart';
 class GenerateBloc extends Bloc<GenerateEvent, GenerateState> {
   GenerateBloc() : super(ImageLoading()) {
     on<LoadImage>(_fetchImage);
-    on<AddFavoriteImage>(_addFavoriteImage);
+    on<ToggleFavoritesItem>(_toggleFavoriteImage);
   }
 
   RestApi api = getIt<RestApi>();
   FavoriteCoffeeImageRepo favoriteImageRepo = getIt<FavoriteCoffeeImageRepo>();
 
-  Future<void> _fetchImage(
-    LoadImage event,
-    Emitter<GenerateState> emit,
-  ) async {
+  Future<void> _fetchImage(LoadImage event, Emitter<GenerateState> emit) async {
     try {
-      final image = await api.fetchImage();
-      final imageUrl = image.file;
-      final favoritesUrls = await favoriteImageRepo.fetchFavoritedImageCatalog();
+      const maxRetries = 5;
+      var attempts = 0;
 
-      // check to see if the image is already favorited
-      if(!favoritesUrls.contains(imageUrl)){
-        emit(ImageLoaded(imageUrl, isFavorited: false));
-      } else {
-        await _fetchImage(event, emit);
+      final favoritesUrls = await favoriteImageRepo
+          .fetchFavoritedImageCatalog();
+
+      while (attempts < maxRetries) {
+        final image = await api.fetchImage();
+        final imageUrl = image.file;
+
+        // check to see if the image is already favorited
+        if (!favoritesUrls.contains(imageUrl)) {
+          emit(ImageLoaded(imageUrl, isFavorited: false));
+          return;
+        }
+        attempts++;
       }
+
+      // If we didn’t find any new image after retries
+      emit(ImageError("Couldn't find a new image after $maxRetries tries."));
     } catch (e) {
       emit(ImageError(e.toString()));
     }
   }
 
-  Future<void> _addFavoriteImage(
-    AddFavoriteImage event,
+  Future<void> _toggleFavoriteImage(
+    ToggleFavoritesItem event,
     Emitter<GenerateState> emit,
   ) async {
     try {
-      await favoriteImageRepo.addFavoriteImage(event.imageUrl);
-      emit(ImageLoaded(event.imageUrl, isFavorited: true));
+      if(event.isFavorited){
+        await favoriteImageRepo.addFavoriteImage(event.imageUrl);
+      } else {
+        await favoriteImageRepo.removeFavoriteImage(event.imageUrl);
+      }
+      emit(ImageLoaded(event.imageUrl, isFavorited: event.isFavorited));
     } catch (e) {
-      emit(ImageError('Failure to add image to favorite: $e'));
+      emit(ImageError('Failure to update images in favorite: $e'));
     }
   }
 }

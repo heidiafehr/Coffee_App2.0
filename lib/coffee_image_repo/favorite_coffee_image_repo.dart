@@ -75,4 +75,39 @@ class FavoriteCoffeeImageRepo {
       throw Exception('Failed to add image to favorites: $e');
     }
   }
+
+  Future<void> removeFavoriteImage(String imageUrl) async {
+    final prefs = getIt<SharedPreferences>();
+
+    final favoriteImageCatalog = await fetchFavoritedImageCatalog();
+    final favoriteImagePaths = await fetchFavoritedImagePaths();
+
+    // retrieve local documents dir
+    final dir = await getApplicationDocumentsDirectory();
+
+    // generate filename
+    final fileName = imageUrl.split('/').last;
+    final filePath = '${dir.path}/$fileName';
+
+    try {
+      if (favoriteImagePaths.contains(filePath) &&
+          favoriteImageCatalog.contains(imageUrl)) {
+        favoriteImageCatalog.remove(imageUrl);
+        favoriteImagePaths.remove(filePath);
+
+        // update saved prefs
+        await prefs.setStringList('favoriteImageUrls', favoriteImageCatalog);
+        await prefs.setStringList('favoriteImagePaths', favoriteImagePaths);
+
+        final file = File(filePath);
+        if (await file.exists()) {
+          await file.delete();
+        }
+      } else {
+        throw Exception('File does not exist, cannot delete');
+      }
+    } catch (e) {
+      throw Exception('Failed to remove image to favorites: $e');
+    }
+  }
 }
