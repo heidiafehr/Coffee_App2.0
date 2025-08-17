@@ -1,7 +1,10 @@
+import 'package:coffee_app_2/favorites_screen/bloc/favorites_bloc.dart';
+import 'package:coffee_app_2/favorites_screen/bloc/favorites_events.dart';
 import 'package:coffee_app_2/favorites_screen/favorites_screen.dart';
 import 'package:coffee_app_2/generate_screen/generate_screen.dart';
 import 'package:coffee_app_2/welcome_screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PageContainerWithNav extends StatefulWidget {
   final int initialIndex;
@@ -36,6 +39,11 @@ class PageContainerWithNavState extends State<PageContainerWithNav> {
           setState(() {
             _selectedIndex = index;
           });
+
+          // reload page when selecting favorites
+          if (index == 2){
+            context.read<FavoritesBloc>().add(LoadFavoritesCatalog());
+          }
         },
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
