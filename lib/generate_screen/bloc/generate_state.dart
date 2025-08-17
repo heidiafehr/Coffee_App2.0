@@ -8,9 +8,10 @@ abstract class GenerateState extends Equatable {
 class ImageLoading extends GenerateState {}
 
 class ImageLoaded extends GenerateState {
-  ImageLoaded(this.imageUrl);
+  ImageLoaded(this.imageUrl, {this.isFavorited = false});
 
   final String imageUrl;
+  final bool isFavorited;
   
   @override
   List<Object?> get props => [imageUrl];

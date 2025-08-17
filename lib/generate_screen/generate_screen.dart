@@ -27,7 +27,15 @@ class _GenerateScreenState extends State<GenerateScreen> {
               } else if (state is ImageLoaded) {
                 return Column(
                   children: [
-                    Image.network(state.imageUrl),
+                    Stack(
+                      children: [
+                        Image.network(state.imageUrl),
+                        ElevatedButton(
+                          onPressed: () => {generateBloc.add(AddFavoriteImage(state.imageUrl))},
+                          child: Icon(Icons.favorite),
+                        ),
+                      ],
+                    ),
                     Row(
                       children: [
                         ElevatedButton(

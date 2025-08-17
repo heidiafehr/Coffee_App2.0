@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:coffee_app_2/random_image_repo/coffee_image_class.dart';
+import 'package:coffee_app_2/coffee_image_repo/coffee_image_class.dart';
 import 'package:http/http.dart' as http;
 
 class RestApi {
