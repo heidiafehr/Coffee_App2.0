@@ -22,6 +22,21 @@ class FavoriteCoffeeImageRepo {
     }
   }
 
+  Future<List<String>> fetchFavoritedImagePaths() async {
+    final prefs = getIt<SharedPreferences>();
+
+    try {
+      final favoriteImagePaths = prefs.getStringList('favoriteImagePaths');
+      if (favoriteImagePaths != null && favoriteImagePaths.isNotEmpty) {
+        return favoriteImagePaths;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      throw Exception('Failed to retrieve favorite image catalog');
+    }
+  }
+
   Future<void> addFavoriteImage(String imageUrl) async {
     // retrieve shared preferences
     final prefs = getIt<SharedPreferences>();
@@ -50,6 +65,11 @@ class FavoriteCoffeeImageRepo {
 
         // save image bytes to file
         await file.writeAsBytes(bytes);
+
+        // save paths in saved preferences
+        final localPaths = await fetchFavoritedImagePaths();
+        localPaths.add(file.path);
+        await prefs.setStringList('favoriteImagePaths', localPaths);
       }
     } catch (e) {
       throw Exception('Failed to add image to favorites: $e');

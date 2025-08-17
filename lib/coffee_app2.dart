@@ -1,5 +1,7 @@
+import 'package:coffee_app_2/favorites_screen/bloc/favorites_bloc.dart';
+import 'package:coffee_app_2/favorites_screen/bloc/favorites_events.dart';
 import 'package:coffee_app_2/generate_screen/bloc/generate_bloc.dart';
-import 'package:coffee_app_2/generate_screen/bloc/generate_event.dart';
+import 'package:coffee_app_2/generate_screen/bloc/generate_events.dart';
 import 'package:coffee_app_2/page_container_with_nav/page_container_with_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +13,12 @@ class CoffeeApp2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MultiBlocProvider(
-        providers: [BlocProvider(create: (_) => GenerateBloc()..add(LoadImage()))],
+        providers: [
+          BlocProvider(create: (_) => GenerateBloc()..add(LoadImage())),
+          BlocProvider(
+            create: (_) => FavoritesBloc()..add(LoadFavoritesCatalog()),
+          ),
+        ],
         child: PageContainerWithNav(),
       ),
     );
