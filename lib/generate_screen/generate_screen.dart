@@ -1,6 +1,6 @@
 import 'package:coffee_app_2/generate_screen/bloc/generate_bloc.dart';
-import 'package:coffee_app_2/generate_screen/bloc/generate_event.dart';
-import 'package:coffee_app_2/generate_screen/bloc/generate_state.dart';
+import 'package:coffee_app_2/generate_screen/bloc/generate_events.dart';
+import 'package:coffee_app_2/generate_screen/bloc/generate_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

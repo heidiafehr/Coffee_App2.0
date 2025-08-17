@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffee_app_2/coffee_image_repo/favorite_coffee_image_repo.dart';
-import 'package:coffee_app_2/generate_screen/bloc/generate_event.dart';
-import 'package:coffee_app_2/generate_screen/bloc/generate_state.dart';
+import 'package:coffee_app_2/generate_screen/bloc/generate_events.dart';
+import 'package:coffee_app_2/generate_screen/bloc/generate_states.dart';
 import 'package:coffee_app_2/coffee_image_repo/rest_instance_call.dart';
 import 'package:coffee_app_2/service_locator.dart';
 
@@ -21,10 +21,14 @@ class GenerateBloc extends Bloc<GenerateEvent, GenerateState> {
     try {
       final image = await api.fetchImage();
       final imageUrl = image.file;
+      final favoritesUrls = await favoriteImageRepo.fetchFavoritedImageCatalog();
 
-      emit(ImageLoaded(imageUrl, isFavorited: false));
-
-      // add checking if it is favorites here before loading
+      // check to see if the image is already favorited
+      if(!favoritesUrls.contains(imageUrl)){
+        emit(ImageLoaded(imageUrl, isFavorited: false));
+      } else {
+        await _fetchImage(event, emit);
+      }
     } catch (e) {
       emit(ImageError(e.toString()));
     }
