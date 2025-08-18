@@ -1,3 +1,4 @@
+import 'package:coffee_app_2/app_colors.dart';
 import 'package:coffee_app_2/generate_screen/bloc/generate_bloc.dart';
 import 'package:coffee_app_2/generate_screen/bloc/generate_events.dart';
 import 'package:coffee_app_2/generate_screen/bloc/generate_states.dart';
@@ -28,23 +29,40 @@ class _GenerateScreenState extends State<GenerateScreen> {
                 return Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(20.0),
                       child: Stack(
                         children: [
                           AspectRatio(
                             aspectRatio: 1,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                state.imageUrl,
-                                fit: BoxFit.cover,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: AppColors.darkBrown,
+                                  width: 4,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.darkBrown,
+                                    blurRadius: 0,
+                                    offset: Offset(8, 8),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  state.imageUrl,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
                           Positioned(
-                            top: 8,
-                            right: 8,
-                            child: ElevatedButton(
+                            bottom: 6,
+                            right: 6,
+                            child: IconButton(
+                              icon: Icon(Icons.favorite),
                               onPressed: () async {
                                 generateBloc.add(
                                   ToggleFavoritesItem(
@@ -53,23 +71,40 @@ class _GenerateScreenState extends State<GenerateScreen> {
                                   ),
                                 );
                               },
-                              style: ElevatedButton.styleFrom(
-                                iconColor: state.isFavorited
-                                    ? Colors.red
-                                    : Colors.grey,
-                                shape: const CircleBorder(),
-                                padding: const EdgeInsets.all(12),
-                              ),
-                              child: Icon(Icons.favorite),
+                              iconSize: 40.0,
+                              color: state.isFavorited
+                                  ? AppColors.lightRed
+                                  : Colors.white.withValues(alpha: 0.4),
                             ),
                           ),
                         ],
                       ),
                     ),
                     Center(
-                      child: ElevatedButton(
-                        onPressed: () => generateBloc.add(LoadImage()),
-                        child: Icon(Icons.refresh_rounded),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(12),
+                          color: AppColors.cream,
+                          border: Border.all(
+                            color: AppColors.darkBrown,
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.darkBrown,
+                              offset: Offset(4, 4),
+                            ),
+                          ],
+                        ),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.refresh_rounded,
+                            color: AppColors.darkBrown,
+                          ),
+                          iconSize: 28,
+                          onPressed: () => generateBloc.add(LoadImage()),
+                        ),
                       ),
                     ),
                   ],

@@ -13,6 +13,9 @@ class CoffeeApp2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Color.fromARGB(255, 250, 204, 166),
+      ),
       home: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => GenerateBloc()..add(LoadImage())),
