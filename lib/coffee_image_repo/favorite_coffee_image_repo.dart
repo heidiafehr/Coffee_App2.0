@@ -76,38 +76,43 @@ class FavoriteCoffeeImageRepo {
     }
   }
 
-  Future<void> removeFavoriteImage(String imageUrl) async {
+  Future<void> removeFavoriteImage(String imageIdentifier) async {
     final prefs = getIt<SharedPreferences>();
 
     final favoriteImageCatalog = await fetchFavoritedImageCatalog();
     final favoriteImagePaths = await fetchFavoritedImagePaths();
 
-    // retrieve local documents dir
-    final dir = await getApplicationDocumentsDirectory();
+    // get just the filename
+    final fileName = imageIdentifier.split('/').last;
 
-    // generate filename
-    final fileName = imageUrl.split('/').last;
-    final filePath = '${dir.path}/$fileName';
+    // find matching url and path
+    final matchingUrl = favoriteImageCatalog.firstWhere(
+      (url) => url.endsWith(fileName),
+      orElse: () => '',
+    );
+    final matchingPath = favoriteImagePaths.firstWhere(
+      (path) => path.endsWith(fileName),
+      orElse: () => '',
+    );
 
-    try {
-      if (favoriteImagePaths.contains(filePath) &&
-          favoriteImageCatalog.contains(imageUrl)) {
-        favoriteImageCatalog.remove(imageUrl);
-        favoriteImagePaths.remove(filePath);
+    if (matchingUrl.isNotEmpty && matchingPath.isNotEmpty) {
+      try {
+        // remove from prefs lists
+        favoriteImageCatalog.remove(matchingUrl);
+        favoriteImagePaths.remove(matchingPath);
 
-        // update saved prefs
         await prefs.setStringList('favoriteImageUrls', favoriteImageCatalog);
         await prefs.setStringList('favoriteImagePaths', favoriteImagePaths);
 
-        final file = File(filePath);
+        final file = File(matchingPath);
         if (await file.exists()) {
           await file.delete();
         }
-      } else {
-        throw Exception('File does not exist, cannot delete');
+      } catch (e) {
+        throw Exception('Failed to remove image to favorites: $e');
       }
-    } catch (e) {
-      throw Exception('Failed to remove image to favorites: $e');
+    } else {
+      throw Exception('File does not exist, cannot delete');
     }
   }
 }
