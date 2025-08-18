@@ -3,6 +3,7 @@ import 'package:coffee_app_2/app_colors.dart';
 import 'package:coffee_app_2/generate_screen/bloc/generate_bloc.dart';
 import 'package:coffee_app_2/generate_screen/bloc/generate_events.dart';
 import 'package:coffee_app_2/generate_screen/bloc/generate_states.dart';
+import 'package:coffee_app_2/generate_screen/widget/refresh_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,6 +24,10 @@ class _GenerateScreenState extends State<GenerateScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text(
+            'Generate\nCoffee Image',
+            style: GoogleFonts.bungee(fontSize: 32, color: AppColors.darkBrown),
+          ),
           BlocBuilder<GenerateBloc, GenerateState>(
             builder: (context, state) {
               if (state is ImageLoading) {
@@ -30,13 +35,6 @@ class _GenerateScreenState extends State<GenerateScreen> {
               } else if (state is ImageLoaded) {
                 return Column(
                   children: [
-                    Text(
-                      'Generate\nCoffee Image',
-                      style: GoogleFonts.bungee(
-                        fontSize: 32,
-                        color: AppColors.darkBrown,
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsetsGeometry.symmetric(
                         horizontal: 30,
@@ -88,62 +86,56 @@ class _GenerateScreenState extends State<GenerateScreen> {
                             ),
                           ),
                           Positioned(
-                            bottom: 6,
-                            right: 6,
-                            child: IconButton(
-                              icon: Icon(Icons.favorite),
-                              onPressed: () async {
-                                generateBloc.add(
-                                  ToggleFavoritesItem(
-                                    state.imageUrl,
-                                    isFavorited: !state.isFavorited,
-                                  ),
-                                );
-                              },
-                              iconSize: 50.0,
-                              color: state.isFavorited
-                                  ? AppColors.lightRed
-                                  : Colors.white.withValues(alpha: 0.4),
+                            bottom: 8,
+                            right: 8,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white.withAlpha(
+                                  100,
+                                ), // subtle background
+                                shape: BoxShape.circle,
+                              ),
+                              child: IconButton(
+                                icon: Icon(Icons.favorite),
+                                iconSize: 40.0,
+                                color: state.isFavorited
+                                    ? AppColors.lightRed
+                                    : AppColors.darkBrown,
+                                onPressed: () {
+                                  generateBloc.add(
+                                    ToggleFavoritesItem(
+                                      state.imageUrl,
+                                      isFavorited: !state.isFavorited,
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Center(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(12),
-                          color: AppColors.cream,
-                          border: Border.all(
-                            color: AppColors.darkBrown,
-                            width: 2,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.darkBrown,
-                              offset: Offset(4, 4),
-                            ),
-                          ],
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.refresh_rounded,
-                            color: AppColors.darkBrown,
-                          ),
-                          iconSize: 28,
-                          onPressed: () => generateBloc.add(LoadImage()),
-                        ),
-                      ),
+                    CustomRefreshButton(
+                      onPressed: () => generateBloc.add(LoadImage()),
                     ),
                   ],
                 );
               } else if (state is ImageError) {
                 return Padding(
                   padding: EdgeInsetsGeometry.all(32),
-                  child: Text(
-                    'uh oh there is an error loading the image!\n\nMaybe you are not connected to the internet?\n\nHead over to the favorites tab and you can still see your favorite coffee images!',
-                    textAlign: TextAlign.center,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsGeometry.directional(bottom: 16),
+                        child: Text(
+                          'uh oh there is an error loading the image!\n\nMaybe you are not connected to the internet? Try refreshing...\n\nor\n\nHead over to the favorites tab and you can still see your favorite coffee images!',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      CustomRefreshButton(
+                        onPressed: () => generateBloc.add(LoadImage()),
+                      ),
+                    ],
                   ),
                 );
               }
