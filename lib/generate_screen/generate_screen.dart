@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffee_app_2/app_colors.dart';
 import 'package:coffee_app_2/generate_screen/bloc/generate_bloc.dart';
 import 'package:coffee_app_2/generate_screen/bloc/generate_events.dart';
@@ -37,14 +38,18 @@ class _GenerateScreenState extends State<GenerateScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsetsGeometry.symmetric(horizontal: 30, vertical: 15),
-                      child:Text(
-                      'Click the refresh button to get a new image or if you really like it click the heart to save it!',
-                      style: GoogleFonts.kodeMono(
-                        fontSize: 14,
-                        color: AppColors.darkBrown,
+                      padding: EdgeInsetsGeometry.symmetric(
+                        horizontal: 30,
+                        vertical: 15,
                       ),
-                    ),),
+                      child: Text(
+                        'Click the refresh button to get a new image or if you really like it click the heart to save it!',
+                        style: GoogleFonts.kodeMono(
+                          fontSize: 14,
+                          color: AppColors.darkBrown,
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Stack(
@@ -68,9 +73,16 @@ class _GenerateScreenState extends State<GenerateScreen> {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
-                                  state.imageUrl,
+                                child: CachedNetworkImage(
+                                  imageUrl: state.imageUrl,
                                   fit: BoxFit.cover,
+                                  placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.error,
+                                    color: AppColors.darkBrown,
+                                  ),
                                 ),
                               ),
                             ),
