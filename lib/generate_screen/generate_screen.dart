@@ -25,26 +25,31 @@ class _GenerateScreenState extends State<GenerateScreen> {
               if (state is ImageLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is ImageLoaded) {
-
                 return Column(
                   children: [
                     Stack(
                       children: [
                         Image.network(state.imageUrl),
-                        ElevatedButton(
-                          onPressed: () async { 
-                                generateBloc.add(
-                                  ToggleFavoritesItem(state.imageUrl, isFavorited: !state.isFavorited));
-                              },
-                          style: ElevatedButton.styleFrom(
-                            iconColor: state.isFavorited
-                                ? Colors.red
-                                : Colors.grey,
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(12),
-                          ),
-                          child: Icon(
-                            Icons.favorite,
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              generateBloc.add(
+                                ToggleFavoritesItem(
+                                  state.imageUrl,
+                                  isFavorited: !state.isFavorited,
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              iconColor: state.isFavorited
+                                  ? Colors.red
+                                  : Colors.grey,
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(12),
+                            ),
+                            child: Icon(Icons.favorite),
                           ),
                         ),
                       ],
