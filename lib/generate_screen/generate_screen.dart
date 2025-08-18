@@ -27,40 +27,50 @@ class _GenerateScreenState extends State<GenerateScreen> {
               } else if (state is ImageLoaded) {
                 return Column(
                   children: [
-                    Stack(
-                      children: [
-                        Image.network(state.imageUrl),
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              generateBloc.add(
-                                ToggleFavoritesItem(
-                                  state.imageUrl,
-                                  isFavorited: !state.isFavorited,
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              iconColor: state.isFavorited
-                                  ? Colors.red
-                                  : Colors.grey,
-                              shape: const CircleBorder(),
-                              padding: const EdgeInsets.all(12),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Stack(
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 1,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.network(
+                                state.imageUrl,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            child: Icon(Icons.favorite),
                           ),
-                        ),
-                      ],
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                generateBloc.add(
+                                  ToggleFavoritesItem(
+                                    state.imageUrl,
+                                    isFavorited: !state.isFavorited,
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                iconColor: state.isFavorited
+                                    ? Colors.red
+                                    : Colors.grey,
+                                shape: const CircleBorder(),
+                                padding: const EdgeInsets.all(12),
+                              ),
+                              child: Icon(Icons.favorite),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () => generateBloc.add(LoadImage()),
-                          child: Icon(Icons.refresh_rounded),
-                        ),
-                      ],
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () => generateBloc.add(LoadImage()),
+                        child: Icon(Icons.refresh_rounded),
+                      ),
                     ),
                   ],
                 );
