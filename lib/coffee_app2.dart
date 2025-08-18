@@ -12,6 +12,7 @@ class CoffeeApp2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => GenerateBloc()..add(LoadImage())),

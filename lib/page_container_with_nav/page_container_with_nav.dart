@@ -2,7 +2,6 @@ import 'package:coffee_app_2/favorites_screen/bloc/favorites_bloc.dart';
 import 'package:coffee_app_2/favorites_screen/bloc/favorites_events.dart';
 import 'package:coffee_app_2/favorites_screen/favorites_screen.dart';
 import 'package:coffee_app_2/generate_screen/generate_screen.dart';
-import 'package:coffee_app_2/welcome_screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +23,7 @@ class PageContainerWithNavState extends State<PageContainerWithNav> {
   }
 
   List<Widget> _buildPages() {
-    return [WelcomeScreen(), GenerateScreen(), FavoritesScreen()];
+    return [GenerateScreen(), FavoritesScreen()];
   }
 
   @override
@@ -41,12 +40,11 @@ class PageContainerWithNavState extends State<PageContainerWithNav> {
           });
 
           // reload page when selecting favorites
-          if (index == 2){
+          if (index == 1){
             context.read<FavoritesBloc>().add(LoadFavoritesCatalog());
           }
         },
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
           NavigationDestination(icon: Icon(Icons.coffee_outlined), label: 'Coffee'),
           NavigationDestination(icon: Icon(Icons.favorite), label: 'Favorites'),
         ],

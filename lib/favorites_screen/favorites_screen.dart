@@ -15,7 +15,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final favoritesBloc = context.read<FavoritesBloc>();
     
     return Scaffold(
       body: BlocBuilder<FavoritesBloc, FavoritesState>(builder: (context, state) {
