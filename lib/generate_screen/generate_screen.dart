@@ -4,6 +4,7 @@ import 'package:coffee_app_2/generate_screen/bloc/generate_events.dart';
 import 'package:coffee_app_2/generate_screen/bloc/generate_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GenerateScreen extends StatefulWidget {
   const GenerateScreen({super.key});
@@ -28,6 +29,22 @@ class _GenerateScreenState extends State<GenerateScreen> {
               } else if (state is ImageLoaded) {
                 return Column(
                   children: [
+                    Text(
+                      'Generate\nCoffee Image',
+                      style: GoogleFonts.bungee(
+                        fontSize: 32,
+                        color: AppColors.darkBrown,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsGeometry.symmetric(horizontal: 30, vertical: 15),
+                      child:Text(
+                      'Click the refresh button to get a new image or if you really like it click the heart to save it!',
+                      style: GoogleFonts.kodeMono(
+                        fontSize: 14,
+                        color: AppColors.darkBrown,
+                      ),
+                    ),),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Stack(
@@ -71,7 +88,7 @@ class _GenerateScreenState extends State<GenerateScreen> {
                                   ),
                                 );
                               },
-                              iconSize: 40.0,
+                              iconSize: 50.0,
                               color: state.isFavorited
                                   ? AppColors.lightRed
                                   : Colors.white.withValues(alpha: 0.4),
