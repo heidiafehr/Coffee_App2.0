@@ -34,6 +34,7 @@ class PageContainerWithNavState extends State<PageContainerWithNav> {
     return Scaffold(
       body: IndexedStack(index: _selectedIndex, children: pages),
       bottomNavigationBar: NavigationBar(
+        height: 120,
         backgroundColor: Colors.transparent,
         selectedIndex: _selectedIndex,
         onDestinationSelected: (index) {
@@ -48,44 +49,58 @@ class PageContainerWithNavState extends State<PageContainerWithNav> {
         },
         destinations: [
           NavigationDestination(
-            icon: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(12),
-                color: _selectedIndex == 0 ? AppColors.darkBrown : AppColors.cream,
-                border: Border.all(color: AppColors.darkBrown, width: 2),
-                boxShadow: [
-                  BoxShadow(color: AppColors.darkBrown, offset: Offset(4, 4)),
-                ],
-              ),
-              child: Padding(
-                padding: EdgeInsetsGeometry.all(12),
-                child: Icon(
-                  Icons.coffee_outlined,
-                  color: _selectedIndex == 0 ? AppColors.cream : AppColors.darkBrown,
-                  size: 40,
+            icon: Padding(
+              padding: EdgeInsetsGeometry.directional(bottom: 10),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(12),
+                  color: _selectedIndex == 0
+                      ? AppColors.darkBrown
+                      : AppColors.cream,
+                  border: Border.all(color: AppColors.darkBrown, width: 2),
+                  boxShadow: [
+                    BoxShadow(color: AppColors.darkBrown, offset: Offset(4, 4)),
+                  ],
+                ),
+                child: Padding(
+                  padding: EdgeInsetsGeometry.all(12),
+                  child: Icon(
+                    Icons.coffee_outlined,
+                    color: _selectedIndex == 0
+                        ? AppColors.cream
+                        : AppColors.darkBrown,
+                    size: 40,
+                  ),
                 ),
               ),
             ),
             label: 'Coffee',
           ),
           NavigationDestination(
-            icon: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(12),
-                color: _selectedIndex == 1 ? AppColors.darkBrown : AppColors.cream,
-                border: Border.all(color: AppColors.darkBrown, width: 2),
-                boxShadow: [
-                  BoxShadow(color: AppColors.darkBrown, offset: Offset(4, 4)),
-                ],
-              ),
-              child: Padding(
-                padding: EdgeInsetsGeometry.all(12),
-                child: Icon(
-                  Icons.favorite_border,
-                  color: _selectedIndex == 1 ? AppColors.cream : AppColors.darkBrown,
-                  size: 40,
+            icon: Padding(
+              padding: EdgeInsetsGeometry.directional(bottom: 10),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(12),
+                  color: _selectedIndex == 1
+                      ? AppColors.darkBrown
+                      : AppColors.cream,
+                  border: Border.all(color: AppColors.darkBrown, width: 2),
+                  boxShadow: [
+                    BoxShadow(color: AppColors.darkBrown, offset: Offset(4, 4)),
+                  ],
+                ),
+                child: Padding(
+                  padding: EdgeInsetsGeometry.all(12),
+                  child: Icon(
+                    Icons.favorite_border,
+                    color: _selectedIndex == 1
+                        ? AppColors.cream
+                        : AppColors.darkBrown,
+                    size: 40,
+                  ),
                 ),
               ),
             ),

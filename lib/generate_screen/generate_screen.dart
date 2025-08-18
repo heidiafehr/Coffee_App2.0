@@ -139,7 +139,13 @@ class _GenerateScreenState extends State<GenerateScreen> {
                   ],
                 );
               } else if (state is ImageError) {
-                return Text('uh oh there is an error loading the image');
+                return Padding(
+                  padding: EdgeInsetsGeometry.all(32),
+                  child: Text(
+                    'uh oh there is an error loading the image!\n\nMaybe you are not connected to the internet?\n\nHead over to the favorites tab and you can still see your favorite coffee images!',
+                    textAlign: TextAlign.center,
+                  ),
+                );
               }
               return const SizedBox.shrink();
             },
