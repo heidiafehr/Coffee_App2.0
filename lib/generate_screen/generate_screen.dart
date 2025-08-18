@@ -90,18 +90,14 @@ class _GenerateScreenState extends State<GenerateScreen> {
                             right: 8,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.white.withAlpha(
-                                  100,
+                                color: Colors.white.withValues(
+                                  alpha: 0.6,
                                 ), // subtle background
                                 shape: BoxShape.circle,
                               ),
                               child: IconButton(
                                 icon: Icon(Icons.favorite),
-                                iconSize: 40.0,
-                                color: state.isFavorited
-                                    ? AppColors.lightRed
-                                    : AppColors.darkBrown,
-                                onPressed: () {
+                                onPressed: () async {
                                   generateBloc.add(
                                     ToggleFavoritesItem(
                                       state.imageUrl,
@@ -109,6 +105,10 @@ class _GenerateScreenState extends State<GenerateScreen> {
                                     ),
                                   );
                                 },
+                                iconSize: 40.0,
+                                color: state.isFavorited
+                                    ? AppColors.lightRed
+                                    : AppColors.darkBrown,
                               ),
                             ),
                           ),
